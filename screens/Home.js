@@ -25,8 +25,10 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import firestore from '@react-native-firebase/firestore';
+import AsimTest from './AsimTest';
 // import ChatHome from './screens/ChatHome';
-
+import {StackActions} from '@react-navigation/native';
+import TopTabStack from '../whatsappScreens/TopTabStack';
 import {
   requestUserPermission,
   NotificationListner,
@@ -108,6 +110,10 @@ const Home = ({navigation}) => {
               <Top_Header_SearchBar navigation={navigation} />
               <Pressable
                 onPress={() => {
+                  // navigation.navigate('AsimTest', {navigation: navigation});
+                  navigation.navigate('SigninScreen');
+                  // navigation.navigate('TopTabStack');
+                  // navigation.dispatch(StackActions.replace('TopTabStack'));
                   // firestore()
                   //   .collection('ChatUsers')
                   //   .add({
@@ -122,6 +128,7 @@ const Home = ({navigation}) => {
                   //   .collection('ChatUsers')
                   //   .get()
                   //   .then(documentSnapshot => {
+                  ////////////
                   //     console.log(
                   //       'User exists: ',
                   //       documentSnapshot._docs['1']._data,

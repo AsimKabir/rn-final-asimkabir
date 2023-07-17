@@ -67,7 +67,13 @@ const SigninScreen = ({navigation}) => {
 
               if (fb_email == email && fb_password == password) {
                 console.log('Sign in done');
-                navigation.navigate('ProfileScreen', {
+                // navigation.navigate('ProfileScreen', {
+                //   selfUserEmail: fb_email,
+                //   selfName: fb_name,
+                //   navigation: navigation,
+                // });
+                console.log('fb_email ===>>> ', fb_email);
+                navigation.navigate('TopTabStack', {
                   selfUserEmail: fb_email,
                   selfName: fb_name,
                   navigation: navigation,

@@ -9,11 +9,12 @@ import {
 } from './screens/pushnotification_helpler';
 import {Alert} from 'react-native';
 import messaging from '@react-native-firebase/messaging';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import notifee from '@notifee/react-native';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
+// import notifee from '@notifee/react-native';
 
 import BottomTabNavigator from './navigation/TabNavigator';
-import ChatStack from './screens/ChatStack';
+import TopTabStack from './whatsappScreens/TopTabStack';
+// import ChatStack from './screens/ChatStack';
 
 const App = () => {
   useEffect(() => {
@@ -32,7 +33,6 @@ const App = () => {
   return (
     <NavigationContainer>
       <BottomTabNavigator />
-      {/* <ChatStack /> */}
     </NavigationContainer>
   );
 };

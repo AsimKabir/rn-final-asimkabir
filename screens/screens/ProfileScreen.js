@@ -18,11 +18,12 @@ import {
   ActivityIndicator,
   useColorScheme,
   View,
+  Pressable,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import {Pressable} from 'react-native';
+// import {} from 'react-native';
 
 Icon.loadFont().then();
 

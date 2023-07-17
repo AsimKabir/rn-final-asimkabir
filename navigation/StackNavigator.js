@@ -1,5 +1,4 @@
 // ./navigation/StackNavigator.js
-
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 
@@ -17,9 +16,6 @@ import Doctor_Profile_Screen from '../screens/Doctor_Profile_Screen';
 import Calender_Screen from '../screens/Calender_Screen';
 import Patient_Detail_Screen from '../screens/Patient_Detail_Screen';
 import Booking_Success_Screen from '../screens/Booking_Success_Screen';
-// import Chat from '../screens/chat/chatScreens/Chat';
-// import ChatLogin from '../screens/chat/passwordScreens/ChatLogin';
-// import ChatScreen from '../screens/chat/ChatScreen';
 import SignUpScreen from '../screens/chat/SignUpScreen';
 import LoginScreen from '../screens/chat/LoginScreen';
 import ChatHome from '../screens/screens/ChatHome';
@@ -27,6 +23,8 @@ import SigninScreen from '../screens/screens/SigninScreen';
 import SignupScreen from '../screens/screens/SignupScreen';
 import ProfileScreen from '../screens/screens/ProfileScreen';
 import ChatScreen from '../screens/screens/ChatScreen';
+import TopTabStack from '../whatsappScreens/TopTabStack';
+import ChatDetail from '../whatsappScreens/ChatDetail';
 const Stack = createStackNavigator();
 
 const screenOptionStyle = {
@@ -69,19 +67,77 @@ const MainStackNavigator = () => {
         name="Booking_Success_Screen"
         component={Booking_Success_Screen}
       />
-      {/* <Stack.Screen name="ChatScreen" component={ChatScreen} />
-      <Stack.Screen name="LoginScreen" component={LoginScreen} />
-      <Stack.Screen name="SignUpScreen" component={SignUpScreen} /> */}
 
       <Stack.Screen name="ChatHome" component={ChatHome} />
       <Stack.Screen name="SigninScreen" component={SigninScreen} />
       <Stack.Screen name="SignupScreen" component={SignupScreen} />
       <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
       <Stack.Screen name="ChatScreen" component={ChatScreen} />
+      <Stack.Screen
+        name="TopTabStack"
+        component={TopTabStack}
+        // options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="ChatDetail"
+        component={ChatDetail}
+        options={{
+          headerTitle: props => HeaderTitle(),
+          // headerLeft: () => HeaderTitle(),
+          headerRight: () => (
+            <View style={{flexDirection: 'row'}}>
+              <Icon
+                name="video-camera"
+                color="white"
+                size={20}
+                style={{marginRight: 15}}
+              />
+              <Icon
+                name="phone"
+                color="white"
+                size={20}
+                style={{marginRight: 15}}
+              />
+              <Icon name="align-center" color="white" size={20} />
+            </View>
+          ),
+        }}
+      />
     </Stack.Navigator>
   );
 };
+const HeaderTitle = () => {
+  return (
+    <View style={{flexDirection: 'row'}}>
+      <Image
+        source={require('../images/earth.gif')}
+        style={{
+          width: 40,
+          height: 40,
+          borderRadius: 50,
+          alignSelf: 'center',
+        }}
+      />
 
+      <View style={{}}>
+        <Text
+          style={[
+            {fontWeight: '400', textAlignVertical: 'center', color: 'white'},
+          ]}>
+          Dr. Asim Kabir Ahmed
+        </Text>
+        <Text
+          style={{
+            fontWeight: '400',
+            textAlignVertical: 'center',
+            color: 'white',
+          }}>
+          Gynecologist
+        </Text>
+      </View>
+    </View>
+  );
+};
 const ContactStackNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{screenOptionStyle, headerShown: false}}>
@@ -115,6 +171,7 @@ const ChatStackNavigator = () => {
     </Stack.Navigator>
   );
 };
+
 export {
   MainStackNavigator,
   ContactStackNavigator,

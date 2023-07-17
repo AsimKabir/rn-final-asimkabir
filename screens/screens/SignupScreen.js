@@ -10,15 +10,20 @@ import {
   TextInput,
   Alert,
   ScrollView,
+  Image,
 } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import {Pressable} from 'react-native';
+import ImageResizer from 'react-native-image-resizer';
 
 export default SignupScreen = ({navigation}) => {
   const [user, setUser] = useState({});
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [profileImage, setProfileImage] = useState();
 
   const updateSecureText = () => {
     // setData({
@@ -67,6 +72,7 @@ export default SignupScreen = ({navigation}) => {
                       name: name,
                       email: email,
                       password: password,
+                      profileImage: profileImage,
                     })
                     .then(() => {
                       console.log('User added successfully!');
@@ -88,6 +94,85 @@ export default SignupScreen = ({navigation}) => {
 
     //////////////////////////////////////
   };
+  function uploadImageFromCamera() {
+    launchCamera(
+      {
+        saveToPhotos: true,
+        mediaType: 'photo',
+        includeBase64: false,
+      },
+      response => {
+        console.log('Response = ', response);
+        // console.log('Response LENGTH = ', response.length);
+        if (response.didCancel) {
+          console.log('User cancelled image picker');
+        } else if (response.error) {
+          console.log('ImagePicker Error: ', response.error);
+        } else if (response.customButton) {
+          console.log('User tapped custom button: ', response.customButton);
+          alert(response.customButton);
+        } else {
+          if (response != null) {
+            // console.log(
+            //   'COUNT ====>> Current uploaded images --->> ',
+            //   response['assets'].length,
+            // );
+            // for (let i = 0; i < response['assets'].length; i++) {
+            //   imageResponse.push(response['assets'][i]['uri']);
+            // }
+            // setLoader(true);
+            // setimageResponse(imageResponse);
+            setProfileImage(response['assets'][0]['uri']);
+
+            // setLoader(false);
+            // ImageResizer(response['assets'][0]['uri']);
+            console.log('IMAGE PATH ==>>> ', response['assets'][0]['uri']);
+            // console.log('IMAGE PATH ==>>> ', profileImage);
+          }
+        }
+      },
+    );
+  }
+  console.log('IMAGE PATH ==>>> ', profileImage);
+
+  function ImageResizer(Imagee) {
+    let newWidth = 100;
+    let newHeight = 100;
+    let compressFormat = 'PNG';
+    let quality = 100;
+    let rotation = 0;
+    let outputPath = null;
+    let imageUri = Imagee;
+    ImageResizer.createResizedImage(
+      imageUri,
+      newWidth,
+      newHeight,
+      compressFormat,
+      quality,
+      rotation,
+      outputPath,
+    )
+      .then(response => {
+        // response.uri is the URI of the new image that can now be displayed, uploaded...
+        //resized image uri
+        let uri = response.uri;
+        //generating image name
+        let imageName = 'profile' + this.state.userId;
+        //to resolve file path issue on different platforms
+        let uploadUri =
+          Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
+        //setting the image name and image uri in the state
+        // this.setState({
+        //   uploadUri,
+        //   imageName,
+        // });
+
+        setProfileImage(uploadUri);
+      })
+      .catch(err => {
+        console.log('image resizing error => ', err);
+      });
+  }
 
   return (
     <View
@@ -98,6 +183,22 @@ export default SignupScreen = ({navigation}) => {
         },
       ]}>
       <View style={styles.header}>
+        <Pressable
+          onPress={() => {
+            console.log('Button pressed');
+            uploadImageFromCamera();
+          }}>
+          <Image
+            style={{
+              width: 110,
+              height: 110,
+              borderRadius: 100,
+              // alignContent: 'center',
+              alignSelf: 'center',
+            }}
+            source={{uri: profileImage}}
+          />
+        </Pressable>
         <Text style={styles.text_header}>Sign up</Text>
         <Text style={styles.headerTitle}>
           Input your Email address and Password in the form below to Register.
@@ -168,7 +269,19 @@ export default SignupScreen = ({navigation}) => {
             {password ? <Text>Show</Text> : <Text>Hide</Text>}
           </TouchableOpacity>
         </View>
-
+        {/* <View style={{flexDirection: 'row'}}>
+          <Button
+            title="Open camera"
+            onPress={() => {
+              console.log('Button pressed');
+              uploadImageFromCamera();
+            }}
+          />
+          <Image
+            style={{width: 110, height: 110, borderRadius: 100}}
+            source={{uri: profileImage}}
+          />
+        </View> */}
         <TouchableOpacity
           onPress={() => userRegistration()}
           style={[
